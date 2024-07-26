@@ -11,7 +11,8 @@ export class AuthService {
     this.account = new Account(this.cliet);
   }
 
-  //Sign up >>>>>>>>>>>>>>> 
+  //Sign up >>>>>>>>>>>>>>>
+
   async createAccount({ email, password, name }) {
     try {
       const userAccount = await this.account.create(
@@ -40,6 +41,7 @@ export class AuthService {
       throw error;
     }
   }
+  // Verify you are using the correct version of the library
 
   //Get current User >>>>>>>>>>>>>>>
   async getCurrentUser() {
