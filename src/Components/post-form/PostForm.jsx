@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/config";
@@ -6,12 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function PostForm({ post }) {
-    // const [data,setData]= useState([])
-    // useEffect (()=>{
-    //     const userData = useSelector((state) => state.auth.userData);
-    // console.log(userData);
-    // setData(userData)
-    // })
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || "",
@@ -23,7 +17,7 @@ export default function PostForm({ post }) {
 
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
-    console.log(userData);
+    // console.log(userData);
 
     const submit = async (data) => {
         if (post) {
@@ -80,25 +74,7 @@ export default function PostForm({ post }) {
 
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-full lg:w-2/3 px-2">
-                <Input
-                    label="Title :"
-                    placeholder="Title"
-                    className="mb-4"
-                    {...register("title", { required: true })}
-                />
-                <Input
-                    label="Slug :"
-                    placeholder="Slug"
-                    className="mb-4"
-                    {...register("slug", { required: true })}
-                    onInput={(e) => {
-                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
-                    }}
-                />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
-            </div>
-            <div className="w-full lg:w-1/3 px-2">
+            <div className="w-full lg:w-1/3 px-2 order-1 lg:order-2">
                 <Input
                     label="Featured Image :"
                     type="file"
@@ -121,6 +97,29 @@ export default function PostForm({ post }) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
+                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full hidden lg:flex justify-center items-center">
+                    {post ? "Update" : "Submit"}
+                </Button>
+            </div>
+            <div className="w-full lg:w-2/3 px-2 order-2 lg:order-1">
+                <Input
+                    label="Title :"
+                    placeholder="Title"
+                    className="mb-4"
+                    {...register("title", { required: true })}
+                />
+                <Input
+                    label="Slug :"
+                    placeholder="Slug"
+                    className="mb-4"
+                    {...register("slug", { required: true })}
+                    onInput={(e) => {
+                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
+                    }}
+                />
+                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+            </div>
+            <div className="w-full px-2 mt-4 order-3 lg:hidden lg:order-2">
                 <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
                     {post ? "Update" : "Submit"}
                 </Button>
